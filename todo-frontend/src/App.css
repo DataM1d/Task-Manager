@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
-  --primary: #5c62ff;
+  --primary: #4d65ff;
+  --primary-gradient: linear-gradient(135deg, #7b8aff 0%, #4d65ff 100%);
   --bg-page: #f4f7ff;
   --bg-card: #ffffff;
-  --text-main: #1a1a1a;
-  --text-secondary: #64748b;
+  --text-main: #353333ff;
+  --text-secondary: #7e6c6cff;
   --border: #e2e8f0;
 
   --color-page: var(--bg-page);
@@ -11,6 +14,8 @@
   --color-text-main: var(--text-main);
   --color-text-secondary: var(--text-secondary);
   --color-border: var(--border);
+  
+  --font-main: 'Montserrat', sans-serif;
 }
 
 .dark-mode {
@@ -19,12 +24,38 @@
   --color-text-main: #ffffff;
   --color-text-secondary: #a0a0b0;
   --color-border: #2d2d3f;
+  --primary-gradient: linear-gradient(135deg, #6675ff 0%, #3a52f0 100%);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-main);
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-main);
   background-color: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, textarea, select {
+  font-family: var(--font-main);
+}
+
+.main-header h1 {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.stat-number {
+  font-weight: 800;
+}
+
+.todo-text {
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .app-wrapper {
@@ -37,6 +68,7 @@ body {
 .dashboard-container {
   display: flex;
   width: 100%;
+  transition: all 0.3s ease;
 }
 
 .loading-screen {
@@ -47,4 +79,10 @@ body {
   font-size: 1.5rem;
   color: var(--primary);
   background: var(--color-page);
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column; 
+  }
 }

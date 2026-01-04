@@ -1,5 +1,5 @@
 export default function TodoTabs({ activeFilter, setFilter }) {
-  const tabs = ['All', 'Active', 'Done'];
+  const tabs = ['All', 'Active', 'Done', 'Trash'];
   
   return (
     <nav className="filter-tabs">

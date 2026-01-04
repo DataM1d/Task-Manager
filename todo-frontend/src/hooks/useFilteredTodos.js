@@ -1,36 +1,31 @@
 import { useMemo } from 'react';
 
-const CATEGORIES = [
-  { name: 'Personal', color: '#5c62ff' },
-  { name: 'Work', color: '#4caf50' },
-  { name: 'Urgent', color: '#f44336' }
-];
-
 export const useFilteredTodos = (todos, filter) => {
-  // Enhance todos with categories
-  const enhancedTodos = useMemo(() => {
-    return todos.map(t => ({
-      ...t,
-      category: CATEGORIES[t.title.length % CATEGORIES.length].name,
-      categoryColor: CATEGORIES[t.title.length % CATEGORIES.length].color
-    }));
-  }, [todos]);
+  const CATEGORIES = ['PERSONAL', 'WORK', 'SHOPPING', 'HEALTH', 'FINANCE', 'URGENT'];
 
-  // Derived state: stats
-  const activeCount = useMemo(() => 
-    enhancedTodos.filter(t => !t.isCompleted).length
-  , [enhancedTodos]);
-
-  // Derived state: filtered list
   const filteredTodos = useMemo(() => {
-    switch (filter) {
-      case 'Active': return enhancedTodos.filter(t => !t.isCompleted);
-      case 'Done': return enhancedTodos.filter(t => t.isCompleted);
-      case 'All': return enhancedTodos;
-      default:
-        return enhancedTodos.filter(t => t.category === filter);
-    }
-  }, [enhancedTodos, filter]);
+    const normalizedFilter = (filter || 'ALL').toUpperCase();
 
-  return { enhancedTodos, filteredTodos, activeCount, CATEGORIES };
+    const isTrashView = normalizedFilter === 'TRASH' || normalizedFilter === 'RECYCLE BIN';
+    const isRecoveredView = normalizedFilter === 'RECOVERED';
+
+    return todos.filter(todo => {
+      if (isTrashView) {
+        return todo.status === 'deleted'; 
+      }
+      if (todo.status === 'deleted') return false;
+      if (isRecoveredView) {
+        return todo.is_recovered === true;
+      }
+
+      if (normalizedFilter === 'ALL') return true;
+      if (normalizedFilter === 'ACTIVE') return !todo.is_completed;
+      if (normalizedFilter === 'DONE') return todo.is_completed;
+
+      const categoryName = todo.categories?.name || 'PERSONAL';
+      return categoryName.toUpperCase() === normalizedFilter; 
+    });
+  }, [todos, filter]);
+
+  return { filteredTodos, enhancedTodos: todos, CATEGORIES };
 };
